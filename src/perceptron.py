@@ -12,8 +12,8 @@ class Perceptron():
         self.neurons = neurons
         self.bias = -1.0  # x0
         self.theta = -1.0  # w0
-        self.w = self.initW()  # incializa w (aleatório com theta w0)
         self.data = self.insertBias()  # insere valor do x0 na base de dados
+        self.w = self.initW()  # incializa w (aleatório com theta w0)
 
     # Retorna a ultima coluna de certo x
     def desired(self, x):
@@ -21,8 +21,10 @@ class Perceptron():
 
     # Insere o valor do x0(bias) na base de dados recebida
     def insertBias(self):
-        d = self.data
-        d[:, 0] = self.bias
+        d = []
+        for i in range(len(self.data)):
+            d.append(np.insert(self.data[i], 0, self.bias))  # insere o valor de x0 para todos os padrões
+        d = np.asarray(d)
         return d
 
     # Inicializa a matrix w com mesmo numero de colunas da base e com c linhas(número de neuronios)
@@ -37,22 +39,30 @@ class Perceptron():
         print("Dados:", self.data)
         print("Proporção de treinamento/testes:", self.proportion)
         print("Taxa de aprendizagem:", self.eta)
-        print("Número de épocas:", self.epochs)
-        print("Vetor w inicial:", self.w)
+        print("Número de épocas: ", self.epochs)
+        print("Vetor w inicial: \n", self.w)
         print("Funções de ativação:", self.getFunctionsNames())
 
-    # Calcula o produto interno entre x e w
-    #TODO arrumar o produto interno da matrix transposta
+    # Calcula o produto interno w.xT
     def dotProduct(self, x):
-        return np.dot(self.w, x)
+        xT = np.asarray([x]).T
+        return np.dot(self.w, xT)
 
     # Retorna uma lista com as saidas dos neuronios
     def y(self, x):
         y = []
         u = self.dotProduct(x)
         for i in range(self.neurons):
-            y.append(self.functions[i][1](u))
+            y.append(self.functions[i][1](u[i][0]))
         return y
+
+    # Retorna uma lista de erros
+    def error(self, x):
+        e = []
+        y = self.y(x)
+        for i in range(self.neurons):
+            e.append(self.desired(x) - y[i])
+        return e
 
     # Retorna uma lista com os nomes das funções de ativação
     def getFunctionsNames(self):
@@ -61,15 +71,10 @@ class Perceptron():
             fns.append(i[0])
         return fns
 
-    # Retorna uma lista de erros
-    def error(self, x):
-        e = []
-        for i in range(self.neurons):
-            e.append(self.desired(x) - self.y(x)[i])
-        return e
-
+    # TODO treinamento
     def training(self):
         pass
 
+    # TODO testes
     def test(self):
         pass
