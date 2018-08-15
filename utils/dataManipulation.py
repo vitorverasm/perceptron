@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-import random
+from random import uniform
+
 
 
 class DataManipulation():
@@ -16,7 +17,7 @@ class DataManipulation():
         else:
             # Já para o artificial é necessário ainda gerar os dados
             # Para após ler
-            self.generateArtificial(40)
+            self.generateArtificial()
             self.data = np.array(self.readData())
         # Embaralha os dados
         np.random.shuffle(self.data)
@@ -32,27 +33,23 @@ class DataManipulation():
         for x in self.data:
             if x[len(x) - 1] == 'Iris-setosa':
                 x[len(x) - 1] = 0
-            else:
+            if x[len(x) - 1] == 'Iris-versicolor':
                 x[len(x) - 1] = 1
+            if x[len(x) - 1] == 'Iris-virginica':
+                x[len(x) - 1] = 2
 
     # Retorna os dados
     def getData(self):
         return self.data
 
-    # Função de geração da base de dados artificial I
-    # De acordo com as caracteristicas de proporção(3/4 e 1/4)
-    # gera os valores da classe 0 proximos de 0
-    # gera os valores da classe 1 proximos de 1
-    def generateArtificial(self, amount):
+    # Função de geração da base de dados artificial
+    def generateArtificial(self, n=10, set=([1, 4, 0], [2, 2, 1], [3, 4, 2])):
         data = []
-        for i in range(int(amount * 3 / 4)):
-            a = random.uniform(0, 0.5)
-            b = random.uniform(0, 0.5)
-            data.append([a, b, 0])
-        for j in range(int(amount * 1 / 4)):
-            a = 1 - (random.uniform(0, 0.5))
-            b = 1 - (random.uniform(0, 0.5))
-            data.append([a, b, 1])
+        for x1, x2, _class in set:
+            for i in range(n):
+                noise_x1 = uniform(0.0, 1.0)
+                noise_x2 = uniform(0.0, 1.0)
+                data.append([x1 + noise_x1, x2 + noise_x2, _class])
         # Escreve no arquivo
         df = pd.DataFrame(data)
         df.to_csv(self.path, index=False, header=None)
