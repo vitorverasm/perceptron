@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 from random import uniform
 
-
-
 class DataManipulation():
     # Construtor
     def __init__(self, path, type):
@@ -17,7 +15,7 @@ class DataManipulation():
         else:
             # Já para o artificial é necessário ainda gerar os dados
             # Para após ler
-            self.generateArtificial()
+            self.generateArtificial(50)
             self.data = np.array(self.readData())
         # Embaralha os dados
         np.random.shuffle(self.data)
@@ -38,27 +36,31 @@ class DataManipulation():
             if x[len(x) - 1] == 'Iris-virginica':
                 x[len(x) - 1] = 2
 
+        df = pd.DataFrame(self.data)
+        df = self.normalize(df)
+        df.to_csv(self.path, index=False, header=None)
+
     # Retorna os dados
     def getData(self):
         return self.data
 
     # Função de geração da base de dados artificial
-    def generateArtificial(self, n=10, set=([1, 4, 0], [2, 2, 1], [3, 4, 2])):
+    def generateArtificial(self, n, set=([1, 4, 0], [2, 2, 1], [3, 4, 2])):
         data = []
-        for x1, x2, _class in set:
+        for x1, x2, label in set:
             for i in range(n):
-                noise_x1 = uniform(0.0, 1.0)
-                noise_x2 = uniform(0.0, 1.0)
-                data.append([x1 + noise_x1, x2 + noise_x2, _class])
+                data.append([x1 + uniform(0.0, 1.0), x2 + uniform(0.0, 1.0), label])
         # Escreve no arquivo
         df = pd.DataFrame(data)
+        df = self.normalize(df)
         df.to_csv(self.path, index=False, header=None)
 
     # Normaliza um dataframe
     def normalize(self, df):
         result = df.copy()
-        for feature_name in df.columns:
-            max_value = df[feature_name].max()
-            min_value = df[feature_name].min()
-            result[feature_name] = (df[feature_name] - min_value) / (max_value - min_value)
+
+        for feature_name in range(len(df.columns) - 1):
+            max_value = df[df.columns[feature_name]].max()
+            min_value = df[df.columns[feature_name]].min()
+            result[df.columns[feature_name]] = (df[df.columns[feature_name]] - min_value) / (max_value - min_value)
         return result
