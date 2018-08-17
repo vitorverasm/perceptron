@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Plota os padrões de dados da base
-def plotPatterns(data, title="Artificial Plot"):
+def plotPatterns(data, title="Iris Dataset Plot"):
     plt.title(title)
     for x in data:
         if x[x.size -1] == 0:
@@ -32,6 +32,7 @@ def plot(data, W):
     return plt
 
 
+# Plot da base de dados da iris(em pares)
 def plot2(data):
     d = []
     for x in data:

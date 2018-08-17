@@ -116,6 +116,9 @@ class Perceptron():
     #   - Testes
     def execution(self, times):
         acc_tx = []  # lista que salva a taxa de acerto de cada realização
+        q=0
+        dataToPlot = self.data
+        wToPlot = self.w
         print("### PERCEPTRON SIMPLES ###")
         print("PARÂMETROS: ")
         self.printInfo()
@@ -132,6 +135,10 @@ class Perceptron():
             tx = self.test()
             print("Taxa de acerto: ", tx, "\n")
             acc_tx.append(tx)
+            if q<tx:
+                q=tx
+                dataToPlot = self.data
+                wToPlot = self.w
 
         accuracy = (sum(acc_tx) / times)  # acurácia entre [0,1]
         # Cálculo do desvio padrão
@@ -140,6 +147,7 @@ class Perceptron():
         print("DESVIO PADRÃO: ", dp)
         print("ACURÁCIA: ", accuracy)
         print("### FIM PERCEPTRON ###")
+        return [q, dataToPlot, wToPlot]
 
     def standardDeviation(self, mean, list):
         aux = []

@@ -45,9 +45,10 @@ class DataManipulation():
         return self.data
 
     # Função de geração da base de dados artificial
-    def generateArtificial(self, n, set=([1, 4, 0], [2, 2, 1], [3, 4, 2])):
+    def generateArtificial(self, n):
         data = []
-        for x1, x2, label in set:
+        default = ([0, 3, 0], [1, 1, 1], [2, 3, 2])
+        for x1, x2, label in default:
             for i in range(n):
                 data.append([x1 + uniform(0.0, 1.0), x2 + uniform(0.0, 1.0), label])
         # Escreve no arquivo
