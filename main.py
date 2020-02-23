@@ -8,7 +8,7 @@ art_path = './samples/artificial.data'
 
 # PARAMETROS
 problem = 'iris'
-realizacoes = 20
+realizacoes = 5
 fn = step_fn()
 todosAtributos = False
 
@@ -17,7 +17,8 @@ if problem == 'iris':
     if todosAtributos:
         data = dm.getData()  # Base iris com apenas todos atributos
     else:
-        data = [[p[2:]] for p in dm.getData()]  # Base iris com apenas 2 atributos
+        # Base iris com apenas 2 atributos
+        data = [[p[2:]] for p in dm.getData()]
 else:
     dm = DataManipulation(art_path, 1)
     data = dm.getData()  # Base artificial
@@ -30,8 +31,8 @@ bestAccData = r[1]
 bestW = r[2]
 print()
 print('### Informações do plot ###')
-print('Melhor taxa de acerto: ', bestAcc)
-print('Melhor vetor w: ', bestW)
+print('Melhor taxa de acerto: ', bestAcc, '(', bestAcc*100, '%)')
+print('Melhor vetor w: \n', bestW)
 print('#############################')
 
 if (problem == 'iris' or problem == 'artificial') and todosAtributos == False:
@@ -39,4 +40,3 @@ if (problem == 'iris' or problem == 'artificial') and todosAtributos == False:
     plotData.plot(bestAccData, bestW[0])
     plotData.plot(bestAccData, bestW[1])
     plotData.plot(bestAccData, bestW[2]).show()
-

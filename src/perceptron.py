@@ -32,7 +32,8 @@ class Perceptron():
     def insertBias(self):
         d = []
         for i in range(len(self.data)):
-            d.append(np.insert(self.data[i], 0, self.bias))  # insere o valor de x0 para todos os padrões
+            # insere o valor de x0 para todos os padrões
+            d.append(np.insert(self.data[i], 0, self.bias))
         d = np.asarray(d)
         return d
 
@@ -87,7 +88,8 @@ class Perceptron():
         return np.array(e)
 
     def training(self):
-        data = self.data[0: int(len(self.data) * self.proportion)]  # utiliza apenas a proporção certa dos dados
+        # utiliza apenas a proporção certa dos dados
+        data = self.data[0: int(len(self.data) * self.proportion)]
         i = 1
         while i < self.epochs:
             np.random.shuffle(data)  # shuffle entre épocas
@@ -99,7 +101,8 @@ class Perceptron():
 
     # TESTES
     def test(self):
-        data = self.data[int(len(self.data) * self.proportion):]  # utiliza apenas a proporção certa dos dados
+        # utiliza apenas a proporção certa dos dados
+        data = self.data[int(len(self.data) * self.proportion):]
         acc = []
         for x in data:
             e = sum(self.error(x))
@@ -116,7 +119,7 @@ class Perceptron():
     #   - Testes
     def execution(self, times):
         acc_tx = []  # lista que salva a taxa de acerto de cada realização
-        q=0
+        q = 0
         dataToPlot = self.data
         wToPlot = self.w
         print("### PERCEPTRON SIMPLES ###")
@@ -130,13 +133,13 @@ class Perceptron():
             self.w = self.initW()  # reseta o vetor de pesos entre realizações
             print("### FASE DE TREINAMENTO ###")
             w = self.training()
-            print("Vetor W final: ", w)
+            print("Vetor W final: \n", w)
             print("### FASE DE TESTES ###")
             tx = self.test()
             print("Taxa de acerto: ", tx, "\n")
             acc_tx.append(tx)
-            if q<tx:
-                q=tx
+            if q < tx:
+                q = tx
                 dataToPlot = self.data
                 wToPlot = self.w
 
